@@ -1,0 +1,13 @@
+[package]
+name = "Terrain_Generator_2D"
+version = "0.1.0"
+authors = ["gluthb <gluthb@gmail.com>"]
+
+[dependencies]
+noise = "*"
+image = "*"
+rand = "*"
+palette = "*"
+
+[dev-dependencies]
+time = "*"
