@@ -4,10 +4,8 @@ extern crate rand;
 extern crate palette;
 
 use rand::Rng;
-use noise::{Seedable, MultiFractal, NoiseModule};
-use palette::{Hsv, Gradient};
-
-use std::path::Path;
+use noise::{Seedable, MultiFractal, NoiseFn};
+use palette::{Gradient};
 
 #[derive(Copy, Clone, Debug)]
 struct Colour
@@ -34,7 +32,7 @@ impl Into<image::Rgb<u8>> for Colour
 {
 	fn into(self) -> image::Rgb<u8>
 	{
-		image::Rgb{ data: [self.r, self.g, self.b] }
+		image::Rgb{ 0: [self.r, self.g, self.b] }
 	}
 }
 
@@ -111,16 +109,16 @@ pub fn generate_terrain(width: u32, height: u32) -> image::DynamicImage
 	let colour_lookup = gen_colour_table();
 	
 	let mut rng = rand::thread_rng();
-	let seed = rng.gen_range(0, usize::max_value());
+	let seed = rng.gen_range(0, usize::max_value()) as u32;
 	
 	let noise_generator = noise::Fbm::new().set_seed(seed).set_frequency(0.01).set_octaves(6).set_lacunarity(2.0).set_persistence(0.5);
 	
 	for (x, y, pix) in image_buf.enumerate_pixels_mut()
 	{
-		let pixel_val = (noise_generator.get([x as f32, y as f32]) * 255.0).abs() as usize;
+		let pixel_val = (noise_generator.get([x as f64, y as f64]) * 255.0).abs() as usize;
 		let colour = colour_lookup[pixel_val];
 		*pix = colour.into();
 	}
 	
-	image::ImageRgb8(image_buf)
+	image::DynamicImage::ImageRgb8(image_buf)
 }
