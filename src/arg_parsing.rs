@@ -15,7 +15,7 @@ pub(crate) struct Vector2 {
 
 impl Display for Vector2 {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        write!(f, "(x: {}, y: {})", self.x, self.y)
+        write!(f, "{},{}", self.x, self.y)
     }
 }
 
@@ -31,12 +31,12 @@ impl FromStr for Vector2 {
 
 impl Vector2 {
     fn from_str_intern(s: &str) -> anyhow::Result<Self> {
-        let mut v_iter = s.split('x');
+        let mut v_iter = s.split(',');
 
         let x = Self::parse_split_iter(&mut v_iter)?;
         let y = Self::parse_split_iter(&mut v_iter)?;
 
-        if v_iter.count() == 0 {
+        if v_iter.count() != 0 {
             bail!("Unexpected extra data used to create vector");
         }
 
@@ -60,10 +60,10 @@ pub(crate) struct ParsedArgs {
     pub(crate) dimensions: Vector2,
 
     /// The directory to write the generate image to.
-    #[clap(short, long, default_value_t=String::from(DEFAULT_WRITE_DIR))]
+    #[clap(short='o', long, default_value_t=String::from(DEFAULT_WRITE_DIR))]
     pub(crate) out_dir: String,
 
     /// Whether or not to output the path to the generated file.
-    #[clap(short, long, default_value_t = false)]
+    #[clap(short = 'n', long, default_value_t = false)]
     pub(crate) output_file_name: bool,
 }

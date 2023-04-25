@@ -22,7 +22,11 @@ impl From<Colour> for image::Rgb<u8> {
 
 impl From<Colour> for palette::rgb::Rgb {
     fn from(val: Colour) -> Self {
-        palette::rgb::Rgb::from_components((val.r.into(), val.g.into(), val.b.into()))
+        palette::rgb::Rgb::from_components((
+            val.r as f32 / 255.0,
+            val.g as f32 / 255.0,
+            val.b as f32 / 255.0,
+        ))
     }
 }
 
