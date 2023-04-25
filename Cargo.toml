@@ -1,13 +1,18 @@
 [package]
-name = "Terrain_Generator_2D"
+name = "terrain_generator_2d"
 version = "0.1.0"
 authors = ["gluthb <gluthb@gmail.com>"]
+edition = "2021"
 
 [dependencies]
+anyhow = { version = "1.0", features = ["backtrace"] }
+clap = {version = "4.1.8", features = ["derive"] }
+chrono = "0.4.24"
 noise = "*"
 image = "*"
-rand = "*"
+rand = "0.8.5"
 palette = "*"
+simdnoise = "3.1.6"
 
 [dev-dependencies]
-time = "*"
+chrono = "0.4"
