@@ -1,5 +1,6 @@
 use std::{fs, path::PathBuf, str::FromStr};
 
+use anyhow::anyhow;
 use arg_parsing::ParsedArgs;
 use chrono::{Datelike, Local, Timelike};
 use clap::Parser;
@@ -36,7 +37,12 @@ fn main() -> anyhow::Result<()> {
     terrain_image.save(&out_path)?;
 
     if p_args.output_file_name {
-        println!("{:?}", &out_path);
+        println!(
+            "{}",
+            out_path.to_str().ok_or(anyhow!(
+                "Converting the generated image path to a string to send to stdout"
+            ))?
+        );
     }
 
     Ok(())
